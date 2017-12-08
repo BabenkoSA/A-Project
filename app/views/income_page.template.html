@@ -1,0 +1,131 @@
+<div class="container">
+    <form class="col-md-12">
+        <div class="input-group" id="income-form">
+            <div class="col-md-2">
+                    <select class="form-control" ng-model="incomeCtrl.tmpIncome.who">
+                        <option value="" disabled selected>Участник</option>
+                        <option ng-repeat="item in incomeCtrl.storageFactory.partners">{{item}}</option>
+                    </select>
+            </div>
+            <div class="col-md-2">
+                <select class="form-control" ng-model="incomeCtrl.tmpIncome.from">
+                    <option value="" disabled selected>Источник</option>
+                    <option ng-repeat="item in incomeCtrl.storageFactory.categories">{{item.title}}</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select class="form-control" ng-model="incomeCtrl.tmpIncome.to">
+                    <option value="" disabled selected>Счет</option>
+                    <option ng-repeat="item in incomeCtrl.storageFactory.counts">{{item.title}}</option>
+                </select>
+            </div>
+            <div class="col-md-1">
+                <input type="number" placeholder="Сумма" required min='0' class="form-control" ng-model="incomeCtrl.tmpIncome.sum">
+            </div>
+            <div class="col-md-2">
+                <div class="input-group">
+                    <input type="text" 
+                    class="form-control"
+                    uib-datepicker-popup="dd.MM.yyyy"
+                    ng-model="incomeCtrl.dt" is-open="incomeCtrl.popup.opened" 
+                    datepicker-options="incomeCtrl.dateOptions"
+                    ng-required="true"
+                    show-button-bar="false"  />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="incomeCtrl.open()"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <input type="text" placeholder="Комментарий" class="form-control" ng-model="incomeCtrl.tmpIncome.comment">
+            </div>
+            <span class="input-group-btn pull-left">
+                <button class="btn btn-success" type="submit" ng-click="incomeCtrl.addIncomeForm(incomeCtrl.dt)">Внести</button>
+            </span>
+        </div>
+    </form>
+</div>
+
+{{dt}}
+
+<div class="col-md-6">
+    <div class="panel panel-success">
+        <div class="panel-heading clearfix">
+            <h3 class="panel-title">Источники доходов</h3>
+            <div class="pull-right">
+                <button type="button" class="btn btn-success btn-sm" 
+        ng-click="incomeCtrl.openSourceModal('.modal-window', 'add', incomeCtrl.categoryModel)"><span class="glyphicon glyphicon-plus"></span> Добавить категорию</button>
+            </div>
+        </div>
+        <div class="panel-body">
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat='item in incomeCtrl.storageFactory.categories'>
+                    <span class="category-title">{{item.title}}</span>
+                    <div class="btn-group pull-right">
+                        <button type="button" class="btn btn-primary btn-xs" title="Редактировать" 
+        ng-click="incomeCtrl.openSourceModal('.modal-window', 'edit', item, $index)"><span class="glyphicon glyphicon-pencil"></span></button>
+                        <button type="button" class="btn btn-danger btn-xs" title="Удалить" 
+        ng-click="incomeCtrl.openRemoveModal('.modal-window', incomeCtrl.storageFactory.categories, item, $index)"><span class="glyphicon glyphicon-remove"></span></button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="panel panel-warning">
+        <div class="panel-heading clearfix">
+            <h3 class="panel-title">Ваши счета</h3>
+            <div class="pull-right">
+                <button type="button" class="btn btn-warning btn-sm" 
+        ng-click="incomeCtrl.openCountModal('.modal-window', 'add', incomeCtrl.countModel)"><span class="glyphicon glyphicon-plus"></span> Добавить счет</button>
+            </div>
+        </div>
+        <div class="panel-body">
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat='item in incomeCtrl.storageFactory.counts'>
+                    <span class="count-title">{{item.title}} <span class="badge badge-success" title="Доступны">{{item.amount}}</span></span>
+                    <div class="btn-group pull-right">
+                        <button type="button" class="btn btn-primary btn-xs" title="Редактировать" ng-click="incomeCtrl.openCountModal('.modal-window', 'edit', item, $index)"><span class="glyphicon glyphicon-pencil"></span></button>
+                        <button type="button" class="btn btn-danger btn-xs" title="Удалить" 
+            ng-click="incomeCtrl.openRemoveModal('.modal-window', incomeCtrl.storageFactory.counts, item.title, $index)"><span class="glyphicon glyphicon-remove"></span></button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="col-md-10 col-md-offset-1">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Последние внесенные доходы</h3>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                    <th>#</th>
+                    <th>Сумма</th>
+                    <th>Откуда/Куда</th>
+                    <th>Кто</th>
+                    <th>Дата</th>
+                    <th>Комментарий</th>
+                    <th>Удалить</th>
+                </thead>
+                <tbody ng-repeat='item in incomeCtrl.storageFactory.history | limitTo: -3'>
+                    <tr>
+                        <td>{{$index+1}}</td>
+                        <td>{{item.sum}}</td>
+                        <td>Из '{{item.from}}' в '{{item.to}}'</td>
+                        <td>{{item.who}}</td>
+                        <td>{{item.date}}</td>
+                        <td>{{item.comment}}</td>
+                        <td><button class="btn btn-danger btn-xs" title="Удалить" 
+        ng-click="incomeCtrl.openRemoveModal('.modal-window', incomeCtrl.storageFactory.history, 'Внесенный доход', $index)"><span class="glyphicon glyphicon-remove"></span></button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal-window"></div>

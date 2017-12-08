@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" ng-app='application'>
+<head>
+    <meta charset="UTF-8">
+    <title>Angular Project</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<!--
+    <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap-theme.min.css">
+-->
+    <link rel="stylesheet" href="node_modules/ng-toast/dist/ngToast.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="node_modules/angular/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.6.7/angular-locale_ru-ru.min.js"></script>
+    <script src="node_modules/angular-route/angular-route.js"></script>
+    <script src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
+    <script src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+    <script src="node_modules/angular-animate/angular-animate.js"></script>
+    <script src="node_modules/ng-toast/dist/ngToast.min.js"></script>
+    
+</head>
+    <body>
+        <div class="container">
+            <div class="page-header">
+                <h1>Income</h1>
+            </div>
+        </div>
+        <div class="container modal-target" ng-controller='IncomeController as incomeCtrl'>
+            <ng-include src="'app/views/income_page.template.html'"></ng-include>
+<!--            <ng-view></ng-view>-->
+        </div>        
+        
+        <script src="app/app.js"></script>
+        <script src="app/app.config.js"></script>
+        
+        <script src="app/factories/storageFactory.js"></script>
+        <script src="app/controllers/modalSourceController.js"></script>
+        <script src="app/controllers/modalCountController.js"></script>
+        <script src="app/controllers/modalRemoveController.js"></script>
+        <script src="app/controllers/incomeController.js"></script>
+<!--        <script src="js/index.js"></script>-->
+    </body>
+</html>
